@@ -1,27 +1,37 @@
-// src/types/User.ts
-
 export interface User {
+    gender: string;
     name: {
       title: string;
       first: string;
       last: string;
     };
+    location: {
+      street: {
+        number: number;
+        name: string;
+      };
+      city: string;
+      state: string;
+      country: string;
+      postcode: string;
+    };
     email: string;
+    login: {
+      username: string;
+      password: string;
+    };
     dob: {
-      date: string; // Example: "1992-03-08T10:20:32.000Z"
+      date: string;
       age: number;
     };
-    location: {
-      city: string;
-      country: string;
-    };
     phone: string;
-    password: string; // This is usually not included, but if needed, add it
     picture: {
       large: string;
       medium: string;
       thumbnail: string;
     };
+    nat: string;
   }
+  
   
   

@@ -1,4 +1,3 @@
-// src/App.tsx
 'use client'
 import React, { useState, useEffect } from 'react';
 import { useRandomUser } from './hooks/useRandomUser';
@@ -12,42 +11,27 @@ const Page: React.FC = () => {
   const [history, setHistory] = useState<User[]>([]);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
 
-  // When a new user is fetched, update the current user and history
+  // Update currentUser and prevent duplicate history entries
   useEffect(() => {
     if (user) {
       setCurrentUser(user);
-      setHistory(prevHistory => [user, ...prevHistory]);
+      setHistory(prevHistory => {
+        const isDuplicate = prevHistory.some(u => u.email === user.email);
+        return isDuplicate ? prevHistory : [user, ...prevHistory];
+      });
     }
   }, [user]);
 
-  const handleRefresh = () => {
-    refresh();
-  };
-
-  const handleSelectHistory = (selectedUser: User) => {
-    setCurrentUser(selectedUser);
-  };
-
   return (
-    <div style={{ display: 'flex', height: '100vh' }}>
+    <div className="flex h-screen">
       {/* History Column */}
-      <HistoryList history={history} onSelect={handleSelectHistory} />
+      <HistoryList history={history} onSelect={setCurrentUser} />
 
       {/* Main Profile Section */}
-      <div 
-        style={{ 
-          flex: 1, 
-          position: 'relative', 
-          padding: '2rem', 
-          background: '#f5f5f5', 
-          display: 'flex', 
-          justifyContent: 'center', 
-          alignItems: 'center' 
-        }}
-      >
-        <RefreshButton onRefresh={handleRefresh} />
+      <div className="flex-1 relative p-8 bg-gray-100 flex justify-center items-center">
+        <RefreshButton onRefresh={refresh} />
         {loading && <p>Loading...</p>}
-        {error && <p>{error}</p>}
+        {error && <p className="text-red-500">{error}</p>}
         {currentUser && <UserProfile user={currentUser} />}
       </div>
     </div>
@@ -55,4 +39,5 @@ const Page: React.FC = () => {
 };
 
 export default Page;
+
 
