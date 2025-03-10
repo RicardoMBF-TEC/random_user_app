@@ -17,7 +17,8 @@ export const useRandomUser = () => {
       } else {
         setError("No user data found");
       }
-    } catch (_err) {
+    } catch (err) {
+      console.error("Error fetching user:", err);
       setError("Failed to fetch user");
     } finally {
       setLoading(false);
